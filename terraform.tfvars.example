@@ -1,0 +1,10 @@
+
+# Create a `pub` file using a command like this:
+#   ssh-keygen -y -f /home/medined/Downloads/pem/kodiak-davidm.pem > kodiak-davidm.pub
+
+aws_profile_name        = "bluejay"
+key_public_file         = "KEYPAIR.pub"
+region                  = "us-east-1"
+ssh_cdir_block          = "68.100.247.64/32"
+vpc_cidr                = "10.194.0.0/16"
+vpc_name                = "s3fs"
