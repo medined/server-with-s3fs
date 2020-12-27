@@ -7,6 +7,15 @@ resource "aws_vpc" "vpc" {
   }
 }
 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = aws_vpc.vpc.id
+  service_name = "com.amazonaws.${var.region}.s3"
+  tags = {
+    Name = "${var.vpc_name}-s3_endpoint"
+    terraform_workspace = terraform.workspace
+  }
+}
+
 resource "aws_subnet" "public_subnet_a" {
   availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block = cidrsubnet(var.vpc_cidr, 8, 1)
@@ -54,27 +63,4 @@ resource "aws_route" "public_internet_gateway" {
 resource "aws_route_table_association" "public" {
   subnet_id      = aws_subnet.public_subnet_a.id
   route_table_id = aws_route_table.public.id
-}
-
-resource "aws_security_group" "default" {
-  name        = "${var.vpc_name}-default-sg"
-  description = "Default security group to allow inbound/outbound from the VPC"
-  vpc_id      = aws_vpc.vpc.id
-  depends_on  = [aws_vpc.vpc]
-  ingress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    self      = true
-  }
-  
-  egress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    self      = "true"
-  }
-  tags = {
-    Name = "${var.vpc_name}-default-sg"
-  }
 }

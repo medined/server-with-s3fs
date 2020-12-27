@@ -22,9 +22,6 @@ data "aws_availability_zones" "available" {
     state = "available"
 }
 
-output "worker_ami" {
-  value = {
-    "id": data.aws_ami.worker.id,
-    "name": data.aws_ami.worker.name
-  }
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
 }
